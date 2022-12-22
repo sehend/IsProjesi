@@ -1,0 +1,56 @@
+﻿@model List<DataTable.Models.Users>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
+
+
+
+<div id="mytable" style="width:90%; margin:0 auto;">
+    <table id="example" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>İsim</th>
+
+            </tr>
+        </thead>
+
+
+        @foreach (var item in Model)
+        {
+            <td>@item.Name</td>
+        }
+
+
+
+    </table>
+</div>
+<button id="button" onclick="htmlTableToExcel('xlsx')">Export HTML Table to EXCEL</button>
+
+<a asp-controller="Home" asp-action="Create">Kulanıcı ekle</a>
+
+
+
+
+
+<script>
+    function htmlTableToExcel(type) {
+        var data = document.getElementById('mytable');
+        var excelFile = XLSX.utils.table_to_book(data, { sheet: "sheet1" });
+        XLSX.write(excelFile, { bookType: type, bookSST: true, type: 'base64' });
+        XLSX.writeFile(excelFile, 'ExportedFile:HTMLTableToExcel' + type);
+    }
+</script>
+<script>
+    $(function () {
+        $('#mytable').DataTable();
+    });
+
+
+
+</script>
